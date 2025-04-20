@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
 
 async function connectToMongoDB(url) {
+  console.log(url);
   return mongoose
     .connect(url)
     .then(() => console.log("MongoDB connected"))
-    .catch((err) => console.log(`Error while connecting: ${e}`));
+    .catch((err) => console.log(`Error while connecting: ${err}`));
 }
 
 export default connectToMongoDB;
-
 
 // async function connectToMongoDB(url) {
 //     try {
