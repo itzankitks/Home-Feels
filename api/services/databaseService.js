@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 async function connectToMongoDB(url) {
-  console.log(url);
   return mongoose
     .connect(url)
     .then(() => console.log("MongoDB connected"))

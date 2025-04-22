@@ -14,6 +14,7 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { useRef, useEffect } from "react";
 
 const Header = ({ type }) => {
   const [destination, setDestination] = useState("");
@@ -31,8 +32,40 @@ const Header = ({ type }) => {
     children: 0,
     room: 1,
   });
+  const dateRef = useRef();
+  const optionsRef = useRef();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dateRef.current && !dateRef.current.contains(event.target)) {
+        setOpenDate(false);
+      }
+      if (optionsRef.current && !optionsRef.current.contains(event.target)) {
+        setOpenOptions(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Enter") {
+        if (openDate || openOptions) {
+          setOpenDate(false);
+          setOpenOptions(false);
+        } else {
+          handleSearch();
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [destination, date, options]);
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -43,8 +76,13 @@ const Header = ({ type }) => {
     });
   };
 
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
   const handleSearch = () => {
-    navigate("/hotels", { state: { destination, date, options } });
+    const formattedDestination = capitalize(destination.toLowerCase());
+    navigate("/hotels", {
+      state: { destination: formattedDestination, date, options },
+    });
   };
 
   return (
@@ -106,14 +144,16 @@ const Header = ({ type }) => {
                   "MM/dd/yyyy"
                 )}`}</span>
                 {openDate && (
-                  <DateRange
-                    editableDateInputs={true}
-                    onChange={(item) => setDate([item.selection])}
-                    moveRangeOnFirstSelection={false}
-                    ranges={date}
-                    className="date"
-                    minDate={new Date()}
-                  />
+                  <div ref={dateRef}>
+                    <DateRange
+                      editableDateInputs={true}
+                      onChange={(item) => setDate([item.selection])}
+                      moveRangeOnFirstSelection={false}
+                      ranges={date}
+                      className="date"
+                      minDate={new Date()}
+                    />
+                  </div>
                 )}
               </div>
               <div className="headerSearchItem">
@@ -123,7 +163,7 @@ const Header = ({ type }) => {
                   className="headerSearchText"
                 >{`${options.adult} adult · ${options.children} children · ${options.room} room`}</span>
                 {openOptions && (
-                  <div className="options">
+                  <div className="options" ref={optionsRef}>
                     <div className="optionItem">
                       <span className="optionText">Adult</span>
                       <div className="optionCounter">
