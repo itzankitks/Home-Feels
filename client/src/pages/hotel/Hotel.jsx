@@ -10,9 +10,10 @@ import {
   faCircleXmark,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import { SearchContext } from "../../context/SearchContext";
 
 const Hotel = () => {
   const location = useLocation();
@@ -21,6 +22,15 @@ const Hotel = () => {
   const [open, setOpen] = useState(false);
 
   const { data, loading, error, reFetch } = useFetch(`/hotels/find/${hotelId}`);
+
+  const { dates, options } = useContext(SearchContext);
+
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  const dayDifference = (startDate, endDate) => {
+    const timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+    return Math.round(timeDifference / MILLISECONDS_PER_DAY);
+  };
+  const days = dayDifference(dates[0]?.endDate, dates[0]?.startDate);
 
   const photos = [
     {
@@ -140,13 +150,14 @@ const Hotel = () => {
                 </p>
               </div>
               <div className="hotelDetailsPrice">
-                <h1>Perfect for a 9-night stay!</h1>
+                <h1>Perfect for a {days}-night stay!</h1>
                 <span>
                   Located in the real heart of Krakow, this property has an
                   excellent location score of {data.rating}!
                 </span>
                 <h2>
-                  <b>${data.cheapestPrice}</b> (9 nights)
+                  <b>${days * options.room * data.cheapestPrice}</b> ({days}{" "}
+                  nights)
                 </h2>
                 <button>Reserve or Book Now!</button>
               </div>

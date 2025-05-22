@@ -9,17 +9,18 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
 import { DateRange } from "react-date-range";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useRef, useEffect } from "react";
+import { SearchContext } from "../../context/SearchContext";
 
 const Header = ({ type }) => {
   const [destination, setDestination] = useState("");
   const [openDate, setOpenDate] = useState(false);
-  const [date, setDate] = useState([
+  const [dates, setDates] = useState([
     {
       startDate: new Date(),
       endDate: new Date(),
@@ -49,6 +50,7 @@ const Header = ({ type }) => {
 
     const handleKeyDown = (event) => {
       if (event.key === "Enter") {
+        if (!destination.trim()) return;
         if (openDate || openOptions) {
           setOpenDate(false);
           setOpenOptions(false);
@@ -65,7 +67,7 @@ const Header = ({ type }) => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [destination, date, options]);
+  }, [destination, dates, options]);
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -76,12 +78,16 @@ const Header = ({ type }) => {
     });
   };
 
+  const { dispatch } = useContext(SearchContext);
+
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
   const handleSearch = () => {
+    if (!destination.trim()) return;
+    dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
     const formattedDestination = capitalize(destination.toLowerCase());
     navigate("/hotels", {
-      state: { destination: formattedDestination, date, options },
+      state: { destination: formattedDestination, dates, options },
     });
   };
 
@@ -139,17 +145,17 @@ const Header = ({ type }) => {
                 <span
                   onClick={() => setOpenDate(!openDate)}
                   className="headerSearchText"
-                >{`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(
-                  date[0].endDate,
+                >{`${format(dates[0].startDate, "MM/dd/yyyy")} to ${format(
+                  dates[0].endDate,
                   "MM/dd/yyyy"
                 )}`}</span>
                 {openDate && (
                   <div ref={dateRef}>
                     <DateRange
                       editableDateInputs={true}
-                      onChange={(item) => setDate([item.selection])}
+                      onChange={(item) => setDates([item.selection])}
                       moveRangeOnFirstSelection={false}
-                      ranges={date}
+                      ranges={dates}
                       className="date"
                       minDate={new Date()}
                     />
