@@ -10,12 +10,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
 import { DateRange } from "react-date-range";
 import { useContext, useState } from "react";
-import "react-date-range/dist/styles.css"; // main css file
-import "react-date-range/dist/theme/default.css"; // theme css file
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { useRef, useEffect } from "react";
 import { SearchContext } from "../../context/SearchContext";
+import { AuthContext } from "../../context/AuthContext";
 
 const Header = ({ type }) => {
   const [destination, setDestination] = useState("");
@@ -80,16 +81,30 @@ const Header = ({ type }) => {
 
   const { dispatch } = useContext(SearchContext);
 
-  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+  const capitalize = (str) =>
+    str
+      .toLowerCase()
+      .split(" ")
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
 
   const handleSearch = () => {
     if (!destination.trim()) return;
-    dispatch({ type: "NEW_SEARCH", payload: { destination, dates, options } });
-    const formattedDestination = capitalize(destination.toLowerCase());
+
+    const formattedDestination = capitalize(destination);
+
+    dispatch({
+      type: "NEW_SEARCH",
+      payload: { city: formattedDestination, dates, options },
+    });
+
     navigate("/hotels", {
       state: { destination: formattedDestination, dates, options },
     });
   };
+
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="header">
@@ -129,7 +144,7 @@ const Header = ({ type }) => {
               Get rewarded for your travels – unlock instant savings of 10% or
               more with a free HomeFeels account
             </p>
-            <button className="headerBtn">Sign in / Register</button>
+            {!user && <button className="headerBtn">Sign in / Register</button>}
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />

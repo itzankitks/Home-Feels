@@ -7,6 +7,7 @@ import {
   getAllHotel,
   getHotelCountByCity,
   getHotelCountByType,
+  getHotelRooms,
 } from "../controllers/hotelsController.js";
 import Hotel from "../models/hotelSchema.js";
 import { verifyAdmin, verifyUser } from "../utils/verifyToken.js";
@@ -28,7 +29,21 @@ router.get("/find/:id", getHotelById);
 // Get All
 router.get("/", getAllHotel);
 
+// Get all hotels _id
+// router.get("/all-hotel-ids", async (req, res, next) => {
+//   try {
+//     const hotels = await Hotel.find({}, "_id");
+//     res.status(200).json({ count: hotels.length, hotels });
+//   } catch (err) {
+//     next(err);
+//   }
+// });
+
+// Route to clear rooms array for all hotels
+// router.put("/hotel-rooms/clear-rooms", clearAllHotelRooms);
+
 router.get("/countByCity", getHotelCountByCity);
 router.get("/countByType", getHotelCountByType);
+router.get("/room/:id", getHotelRooms);
 
 export default router;

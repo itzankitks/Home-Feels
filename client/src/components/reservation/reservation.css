@@ -1,0 +1,328 @@
+.reservation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* Outer modal container */
+.rContainer {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 16px;
+  position: relative;
+  width: 90%;
+  height: 80%;
+  max-width: 600px;
+  max-height: 90vh;
+
+  display: flex;
+  flex-direction: column;
+
+  box-sizing: border-box;
+  overflow: hidden; /* Hide overflow from content */
+}
+
+/* Inner scrollable content area */
+.rContainer > .scrollable-content {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 0.5rem; /* So scrollbar doesn’t touch content */
+}
+
+/* Scrollbar Styling inside scrollable-content only */
+.scrollable-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollable-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.scrollable-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rClose {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #666;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.rClose:hover {
+  color: #e53935;
+  transform: rotate(90deg);
+}
+
+.rContainer > span {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+  display: block;
+  margin-bottom: 2rem;
+}
+
+.rItem {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.rItem:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+.rTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1a73e8;
+  margin-bottom: 0.5rem;
+}
+
+.rDesc {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.rMax {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #475569;
+}
+
+.rPrice {
+  font-weight: 600;
+  color: #1a73e8;
+  font-size: 1.1rem;
+}
+
+.rPrice::before {
+  content: "$";
+  font-size: 0.9rem;
+  margin-right: 2px;
+}
+
+.rSelectRooms {
+  display: grid;
+  grid-auto-flow: column; /* flow items column-wise */
+  grid-template-rows: repeat(2, auto); /* 2 rows per column */
+  gap: 8px;
+  max-width: 100%;
+  max-height: 120px; /* adjust height */
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 4px;
+
+  /* Scrollbar hidden unless scrolling */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar by default and show only while scrolling (WebKit) */
+.rSelectRooms::-webkit-scrollbar {
+  height: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.rSelectRooms:hover::-webkit-scrollbar {
+  opacity: 1;
+}
+
+.rSelectRooms::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.rSelectRooms::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.rSelectRooms::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.room {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.room:hover {
+  background-color: #f1f5f9;
+}
+
+.room label {
+  font-size: 0.95rem;
+  color: #475569;
+  cursor: pointer;
+}
+
+.room input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 4px;
+  border: 2px solid #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.room input[type="checkbox"]:checked {
+  background-color: #1a73e8;
+  border-color: #1a73e8;
+}
+
+.room input[type="checkbox"]:disabled {
+  background-color: #e2e8f0;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.unavailable-note {
+  margin-top: 4px;
+  font-size: 12px;
+  color: grey;
+  line-height: 1.2;
+}
+
+.unavailable-note .line {
+  display: block;
+}
+
+.rButton {
+  width: 100%;
+  padding: 1rem;
+  background-color: #1a73e8;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.rButton:hover {
+  background-color: #1557b0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.2);
+}
+
+.rButton:active {
+  transform: translateY(0);
+}
+
+/* Scrollbar Styling */
+.rContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.rContainer::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 4px;
+}
+
+.rContainer::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.rContainer::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.error-tooltip-overlay {
+  position: absolute;
+  bottom: 80px; /* distance above the button */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  pointer-events: none;
+  animation: fadeInOut 3s ease-in-out forwards;
+}
+
+.error-tooltip-content {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tooltip-arrow {
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #fee2e2;
+}
+
+/* Fade-in-out animation */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  90% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -10px);
+  }
+}

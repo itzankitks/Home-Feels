@@ -1,0 +1,156 @@
+.login {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.lContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 3rem;
+  background-color: white;
+  border-radius: 12px;
+  min-width: 320px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.lContainer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #ffd54f, #ffecb3);
+}
+
+.lContainer h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a73e8;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.lInput {
+  height: 50px;
+  padding: 0 1rem;
+  margin-bottom: 1.5rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.lInput:focus {
+  border-color: #1a73e8;
+  box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1);
+}
+
+.lInput.error {
+  border-color: #e53935;
+  animation: shake 0.5s;
+}
+
+.lInput::placeholder {
+  color: #9e9e9e;
+}
+
+.lButton {
+  height: 54px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1a73e8;
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.lButton:hover {
+  background-color: #0d62d1;
+  box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+  transform: translateY(-2px);
+}
+
+.lButton:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(26, 115, 232, 0.3);
+}
+
+.lButton:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.lContainer span {
+  margin-top: 1rem;
+  display: block;
+  color: #e53935;
+  font-size: 14px;
+  text-align: center;
+  padding: 8px;
+  background-color: rgba(229, 57, 53, 0.1);
+  border-radius: 6px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+  .lContainer {
+    padding: 2rem;
+    min-width: 280px;
+  }
+
+  .lInput,
+  .lButton {
+    height: 46px;
+  }
+}

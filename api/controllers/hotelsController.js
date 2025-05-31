@@ -1,4 +1,5 @@
 import Hotel from "../models/hotelSchema.js";
+import Room from "../models/roomSchema.js";
 import { createError } from "../utils/error.js";
 
 export const createHotel = async (req, res, next) => {
@@ -105,3 +106,32 @@ export const getHotelCountByType = async (req, res, next) => {
     next(err);
   }
 };
+
+export const getHotelRooms = async (req, res, next) => {
+  try {
+    const hotel = await Hotel.findById(req.params.id);
+    const list = await Promise.all(
+      hotel.rooms.map((room) => {
+        return Room.findById(room);
+      })
+    );
+    res.status(200).json(list);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// export const clearAllHotelRooms = async (req, res) => {
+//   try {
+//     const result = await Hotel.updateMany({}, { $set: { rooms: [] } });
+//     res.status(200).json({
+//       message: "Rooms array cleared for all hotels.",
+//       modifiedCount: result.modifiedCount,
+//       hotels: result,
+//     });
+//   } catch (error) {
+//     res
+//       .status(500)
+//       .json({ message: "Error clearing rooms.", error: error.message });
+//   }
+// };
