@@ -39,12 +39,47 @@
 }
 
 .headerBtn {
-  background-color: #0071c2;
-  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
   font-weight: 500;
-  border: none;
-  padding: 10px;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  border: 2px solid transparent;
+  height: fit-content;
+  align-self: center;
+  line-height: 1.2;
+}
+
+.headerBtn.sign-in {
+  background-color: white;
+  color: black;
+}
+
+.headerBtn.sign-in:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.headerBtn:active {
+  transform: translateY(0);
+}
+
+.navButton.login {
+  background-color: white;
+  color: black;
+  height: fit-content;
+  align-self: center;
+  line-height: 1.2;
+}
+
+.navButton.login:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.navButton:active {
+  transform: translateY(0);
 }
 
 .headerSearch {

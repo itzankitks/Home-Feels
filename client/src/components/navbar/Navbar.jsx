@@ -12,7 +12,8 @@ const Navbar = () => {
       <div className="navContainer">
         <Link to="/" className="logoLink">
           <span className="logo">
-            <Home className="logoIcon" />
+            {/* <Home className="logoIcon" /> */}
+            <img src="/logo.svg" alt="HomeFeels Logo" className="logoIcon" />
             HomeFeels
           </span>
         </Link>

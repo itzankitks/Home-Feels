@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useRef, useEffect } from "react";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
+import { motion } from "framer-motion";
 
 const Header = ({ type }) => {
   const [destination, setDestination] = useState("");
@@ -106,6 +107,23 @@ const Header = ({ type }) => {
 
   const { user } = useContext(AuthContext);
 
+  const headerTitle = "A lifetime of discounts? It's Genius.";
+  const headerDesc =
+    "Get rewarded for your travels – unlock instant savings of 10% or more with a free HomeFeels account.";
+
+  const wordAnimation = {
+    hidden: { opacity: 0, y: -10 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: 0.4,
+        ease: "easeOut",
+      },
+    }),
+  };
+
   return (
     <div className="header">
       <div
@@ -138,13 +156,37 @@ const Header = ({ type }) => {
         {type !== "list" && (
           <>
             <h1 className="headerTitle">
-              A lifetime of discounts? It's Genius.
+              {headerTitle.split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  variants={wordAnimation}
+                  initial="hidden"
+                  animate="visible"
+                  style={{ display: "inline-block", marginRight: "0.4ch" }}
+                >
+                  {word}
+                </motion.span>
+              ))}
             </h1>
+
             <p className="headerDesc">
-              Get rewarded for your travels – unlock instant savings of 10% or
-              more with a free HomeFeels account
+              {headerDesc.split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  custom={i}
+                  variants={wordAnimation}
+                  initial="hidden"
+                  animate="visible"
+                  style={{ display: "inline-block", marginRight: "0.4ch" }}
+                >
+                  {word}
+                </motion.span>
+              ))}
             </p>
-            {!user && <button className="headerBtn">Sign in / Register</button>}
+            {!user && (
+              <button className="headerBtn sign-in">Sign in / Register</button>
+            )}
             <div className="headerSearch">
               <div className="headerSearchItem">
                 <FontAwesomeIcon icon={faBed} className="headerIcon" />

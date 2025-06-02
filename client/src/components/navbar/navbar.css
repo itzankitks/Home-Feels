@@ -50,6 +50,7 @@
 .navItems {
   display: flex;
   gap: 1rem;
+  align-items: center;
 }
 
 .navButton {
@@ -60,6 +61,9 @@
   transition: all 0.3s ease;
   font-size: 0.95rem;
   border: 2px solid transparent;
+  height: fit-content;
+  align-self: center;
+  line-height: 1.2;
 }
 
 .navButton.register {
@@ -76,7 +80,10 @@
 
 .navButton.login {
   background-color: white;
-  color: #003580;
+  color: black;
+  height: fit-content;
+  align-self: center;
+  line-height: 1.2;
 }
 
 .navButton.login:hover {
