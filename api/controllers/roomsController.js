@@ -21,37 +21,6 @@ export const createRoom = async (req, res, next) => {
   }
 };
 
-// export const bulkCreateRooms = async (req, res, next) => {
-//   const roomList = req.body;
-
-//   if (!Array.isArray(roomList)) {
-//     return res.status(400).json({ message: "Expected an array of rooms." });
-//   }
-
-//   try {
-//     const createdRooms = [];
-
-//     for (const roomData of roomList) {
-//       const { hotelId, ...roomFields } = roomData;
-//       const newRoom = new Room(roomFields);
-//       const savedRoom = await newRoom.save();
-
-//       await Hotel.findByIdAndUpdate(hotelId, {
-//         $push: { rooms: savedRoom._id },
-//       });
-
-//       createdRooms.push(savedRoom);
-//     }
-
-//     res.status(201).json({
-//       message: `${createdRooms.length} rooms created and linked to hotels.`,
-//       rooms: createdRooms,
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
 export const updateRoom = async (req, res, next) => {
   try {
     const updatedRoom = await Room.findByIdAndUpdate(
@@ -112,11 +81,39 @@ export const getRoomById = async (req, res, next) => {
 export const getAllRoom = async (req, res, next) => {
   try {
     const foundRooms = await Room.find();
-    res.status(200).json({
-      count: foundRooms.length,
-      foundRooms,
-    });
+    res.status(200).json(foundRooms);
   } catch (err) {
     next(err);
   }
 };
+
+// export const bulkCreateRooms = async (req, res, next) => {
+//   const roomList = req.body;
+
+//   if (!Array.isArray(roomList)) {
+//     return res.status(400).json({ message: "Expected an array of rooms." });
+//   }
+
+//   try {
+//     const createdRooms = [];
+
+//     for (const roomData of roomList) {
+//       const { hotelId, ...roomFields } = roomData;
+//       const newRoom = new Room(roomFields);
+//       const savedRoom = await newRoom.save();
+
+//       await Hotel.findByIdAndUpdate(hotelId, {
+//         $push: { rooms: savedRoom._id },
+//       });
+
+//       createdRooms.push(savedRoom);
+//     }
+
+//     res.status(201).json({
+//       message: `${createdRooms.length} rooms created and linked to hotels.`,
+//       rooms: createdRooms,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };

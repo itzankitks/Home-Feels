@@ -14,9 +14,6 @@ const router = express.Router();
 // Create
 router.post("/:hotelId", verifyAdmin, createRoom);
 
-// Bulk Create Rooms
-// router.post("/create-bulk/bulk", bulkCreateRooms);
-
 // Update
 router.put("/:id", verifyAdmin, updateRoom);
 router.put("/availability/:id", updateRoomAvailability);
@@ -29,5 +26,8 @@ router.get("/:id", getRoomById);
 
 // Get All
 router.get("/", getAllRoom);
+
+// Bulk Create Rooms
+// router.post("/create-bulk/bulk", bulkCreateRooms);
 
 export default router;

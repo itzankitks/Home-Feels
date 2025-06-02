@@ -29,6 +29,12 @@ router.get("/find/:id", getHotelById);
 // Get All
 router.get("/", getAllHotel);
 
+router.get("/countByCity", getHotelCountByCity);
+router.get("/countByType", getHotelCountByType);
+
+// Get hotel rooms by hotel ID
+router.get("/room/:id", getHotelRooms);
+
 // Get all hotels _id
 // router.get("/all-hotel-ids", async (req, res, next) => {
 //   try {
@@ -41,9 +47,5 @@ router.get("/", getAllHotel);
 
 // Route to clear rooms array for all hotels
 // router.put("/hotel-rooms/clear-rooms", clearAllHotelRooms);
-
-router.get("/countByCity", getHotelCountByCity);
-router.get("/countByType", getHotelCountByType);
-router.get("/room/:id", getHotelRooms);
 
 export default router;
