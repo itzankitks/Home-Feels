@@ -2,7 +2,6 @@ import { useContext } from "react";
 import "./navbar.css";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { Home } from "lucide-react";
 
 const Navbar = () => {
   const { user } = useContext(AuthContext);
@@ -24,8 +23,12 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="navItems">
-            <button className="navButton register">Register</button>
-            <button className="navButton login">Login</button>
+            {/* <Link to="/register">
+              <button className="navButton register">Register</button>
+            </Link> */}
+            <Link to="/login">
+              <button className="navButton login">Login</button>
+            </Link>
           </div>
         )}
       </div>

@@ -9,12 +9,12 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./header.css";
 import { DateRange } from "react-date-range";
-import { useContext, useState } from "react";
+import { Link } from "react-router-dom";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
-import { useRef, useEffect } from "react";
+import { useCallback, useContext, useState, useRef, useEffect } from "react";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
 import { motion } from "framer-motion";
@@ -37,8 +37,33 @@ const Header = ({ type }) => {
   });
   const dateRef = useRef();
   const optionsRef = useRef();
-
   const navigate = useNavigate();
+  const { dispatch } = useContext(SearchContext);
+  const { user } = useContext(AuthContext);
+
+  const capitalize = (str) =>
+    str
+      .toLowerCase()
+      .split(" ")
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+  // ✅ useCallback so it's stable across renders
+  const handleSearch = useCallback(() => {
+    if (!destination.trim()) return;
+
+    const formattedDestination = capitalize(destination);
+
+    dispatch({
+      type: "NEW_SEARCH",
+      payload: { city: formattedDestination, dates, options },
+    });
+
+    navigate("/hotels", {
+      state: { destination: formattedDestination, dates, options },
+    });
+  }, [destination, dates, options, dispatch, navigate]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -69,7 +94,7 @@ const Header = ({ type }) => {
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [destination, dates, options]);
+  }, [destination, openDate, openOptions, handleSearch]);
 
   const handleOption = (name, operation) => {
     setOptions((prev) => {
@@ -79,33 +104,6 @@ const Header = ({ type }) => {
       };
     });
   };
-
-  const { dispatch } = useContext(SearchContext);
-
-  const capitalize = (str) =>
-    str
-      .toLowerCase()
-      .split(" ")
-      .filter(Boolean)
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-
-  const handleSearch = () => {
-    if (!destination.trim()) return;
-
-    const formattedDestination = capitalize(destination);
-
-    dispatch({
-      type: "NEW_SEARCH",
-      payload: { city: formattedDestination, dates, options },
-    });
-
-    navigate("/hotels", {
-      state: { destination: formattedDestination, dates, options },
-    });
-  };
-
-  const { user } = useContext(AuthContext);
 
   const headerTitle = "A lifetime of discounts? It's Genius.";
   const headerDesc =
@@ -185,7 +183,9 @@ const Header = ({ type }) => {
               ))}
             </p>
             {!user && (
-              <button className="headerBtn sign-in">Sign in / Register</button>
+              <Link to="/login">
+                <button className="headerBtn sign-in">Sign in</button>
+              </Link>
             )}
             <div className="headerSearch">
               <div className="headerSearchItem">
