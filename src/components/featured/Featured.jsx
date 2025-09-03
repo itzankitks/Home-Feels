@@ -2,8 +2,8 @@ import useFetch from "../../hooks/useFetch";
 import "./featured.css";
 
 const Featured = () => {
-  const { data, loading, error } = useFetch(
-    "/hotels/countByCity?cities=Mumbai,Paris,London"
+  const { data, loading } = useFetch(
+    "/api/hotels/countByCity?cities=Mumbai,Paris,London"
   );
 
   // console.log(data);

@@ -10,11 +10,10 @@ import {
   faCircleXmark,
   faLocationDot,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
-import { use } from "react";
 import Reservation from "../../components/reservation/Reservation";
 import { AuthContext } from "../../context/AuthContext";
 
@@ -26,7 +25,7 @@ const Hotel = () => {
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
-  const { data, loading, error, reFetch } = useFetch(`/hotels/find/${hotelId}`);
+  const { data, loading } = useFetch(`/api/hotels/find/${hotelId}`);
 
   const { dates, options } = useContext(SearchContext);
   const { user } = useContext(AuthContext);

@@ -1,19 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./reservation.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircle, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import useFetch from "../../hooks/useFetch";
-import { set } from "date-fns";
 import { SearchContext } from "../../context/SearchContext";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Reservation = ({ setOpen, hotelId }) => {
   const [selectedRooms, setSelectedRooms] = useState([]);
   const [errorMsg, setErrorMsg] = useState("");
-  const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
+  const { data } = useFetch(`/api/hotels/room/${hotelId}`);
   const { dates } = useContext(SearchContext);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -23,8 +22,8 @@ const Reservation = ({ setOpen, hotelId }) => {
   }, []);
 
   const getDatesInRange = (startDate, endDate) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    // const start = new Date(startDate);
+    // const end = new Date(endDate);
     const date = new Date(startDate.getTime());
 
     let list = [];
@@ -72,7 +71,7 @@ const Reservation = ({ setOpen, hotelId }) => {
     try {
       await Promise.all(
         selectedRooms.map((roomId) => {
-          const response = axios.put(`/rooms/availability/${roomId}`, {
+          const response = axios.put(`/api/rooms/availability/${roomId}`, {
             dates: allDates,
           });
           return response.data;

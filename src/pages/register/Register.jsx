@@ -25,7 +25,7 @@ const Register = () => {
       return;
     }
     try {
-      await axios.post("/auth/register", credentials);
+      await axios.post("/api/auth/register", credentials);
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
