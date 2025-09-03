@@ -70,13 +70,16 @@ const Reservation = ({ setOpen, hotelId }) => {
     try {
       await Promise.all(
         selectedRooms.map(async (roomId) => {
-          const res = await fetch(`/api/rooms/availability/${roomId}`, {
-            method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ dates: allDates }),
-          });
+          const res = await fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/api/rooms/availability/${roomId}`,
+            {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ dates: allDates }),
+            }
+          );
 
           if (!res.ok) {
             throw new Error(`Failed to update room ${roomId}: ${res.status}`);

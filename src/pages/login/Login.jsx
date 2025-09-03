@@ -51,13 +51,16 @@ const Login = () => {
     dispatch({ type: "LOGIN_START" });
     dispatch({ type: "LOGIN_START" });
     try {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(credentials),
+        }
+      );
 
       if (!res.ok) {
         // backend likely returns error JSON
