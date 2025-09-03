@@ -1,7 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./login.css";
 import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -50,12 +49,28 @@ const Login = () => {
     }
 
     dispatch({ type: "LOGIN_START" });
+    dispatch({ type: "LOGIN_START" });
     try {
-      const response = await axios.post("/api/auth/login", credentials);
-      dispatch({ type: "LOGIN_SUCCESS", payload: response.data.details });
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!res.ok) {
+        // backend likely returns error JSON
+        const errData = await res.json();
+        throw errData;
+      }
+
+      const data = await res.json();
+
+      dispatch({ type: "LOGIN_SUCCESS", payload: data.details });
       navigate("/");
     } catch (error) {
-      dispatch({ type: "LOGIN_FAILURE", payload: error.response.data });
+      dispatch({ type: "LOGIN_FAILURE", payload: error });
     }
   };
 

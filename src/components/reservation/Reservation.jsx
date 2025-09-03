@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
-import axios from "axios";
 // import { useNavigate } from "react-router-dom";
 
 const Reservation = ({ setOpen, hotelId }) => {
@@ -70,15 +69,27 @@ const Reservation = ({ setOpen, hotelId }) => {
     setErrorMsg(""); // Clear any previous error
     try {
       await Promise.all(
-        selectedRooms.map((roomId) => {
-          const response = axios.put(`/api/rooms/availability/${roomId}`, {
-            dates: allDates,
+        selectedRooms.map(async (roomId) => {
+          const res = await fetch(`/api/rooms/availability/${roomId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ dates: allDates }),
           });
-          return response.data;
+
+          if (!res.ok) {
+            throw new Error(`Failed to update room ${roomId}: ${res.status}`);
+          }
+
+          return res.json(); // if backend returns JSON
         })
       );
+
       setOpen(false);
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error updating rooms:", error);
+    }
   };
 
   return (

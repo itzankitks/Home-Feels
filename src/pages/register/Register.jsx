@@ -1,7 +1,6 @@
 import { useState } from "react";
 import "./register.css";
 // import { AuthContext } from "../../context/AuthContext";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
@@ -24,11 +23,25 @@ const Register = () => {
       setError("Please fill in all fields");
       return;
     }
+
     try {
-      await axios.post("/api/auth/register", credentials);
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(credentials),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || "Registration failed");
+      }
+
+      // success
       navigate("/login");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      setError(err.message || "Registration failed");
     }
   };
 
